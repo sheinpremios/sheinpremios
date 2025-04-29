@@ -1,77 +1,88 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-	<meta charset="UTF-8">
-  <!-- Clarity Tag -->
-  <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "odlde6f5c1");
-  </script>
-
-  <!-- Click ID Tracking -->
-	<script 
-        src="https://cdn.xtracky.com/scripts/utm-handler.js"
-        data-token="3e3ea5d0-7313-4a71-a31d-fad295748342"
-        data-click-id-param="click_id">
+<!DOCTYPE html><html lang="pt-BR"><head>
+    <!-- Xtracky para capturar click_id -->
+<script 
+    src="https://cdn.xtracky.com/scripts/utm-handler.js"
+    data-token="3e3ea5d0-7313-4a71-a31d-fad295748342"
+    data-click-id-param="click_id">
 </script>
 
-  <!-- Função principal -->
-  <script defer>
-    // Função para capturar o parâmetro da URL
-    function getURLParameter(name) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(name);
+<script>
+document.getElementById("ir-pagamento").addEventListener("click", function() {
+    // Captura os valores dos inputs
+    let nome = encodeURIComponent(document.getElementById("nome").value);
+    let email = encodeURIComponent(document.getElementById("email").value);
+    let telefone = encodeURIComponent(document.getElementById("numero").value);
+
+    // Obtém o frete selecionado
+    let freteSelecionado = document.querySelector(".frete-option input[type='radio']:checked");
+
+    if (!freteSelecionado) {
+        alert("Por favor, selecione uma opção de frete.");
+        return;
     }
 
-    window.onload = function() {
-      var nome = localStorage.getItem('nome');
-      var telefone = localStorage.getItem('telefone');
-      var email = localStorage.getItem('email');
-      
-      if (nome) document.getElementById('nome').value = nome;
-      if (telefone) document.getElementById('numero').value = telefone;
-      if (email) document.getElementById('email').value = email;
-    };
+    // Obtém o link original do frete selecionado
+    let linkFrete = freteSelecionado.closest(".frete-option").getAttribute("data-link");
 
-    document.addEventListener("DOMContentLoaded", function() {
-      document.getElementById('ir-pagamento').addEventListener('click', function() {
-        var nome = document.getElementById('nome').value.trim();
-        var telefone = document.getElementById('numero').value.trim();
-        var email = document.getElementById('email').value.trim();
+    // Recupera o click_id da URL, se existir
+    const urlParams = new URLSearchParams(window.location.search);
+    const clickId = urlParams.get('click_id');
 
-        if (nome === "" || telefone === "" || email === "") {
-          alert("Por favor, preencha todos os campos!");
-          return;
-        }
+    // Monta a URL com todos os parâmetros
+    let urlFinal = `${linkFrete}?hidecard=1&name=${nome}&email=${email}&phone=${telefone}`;
+    if (clickId) {
+        urlFinal += `&click_id=${clickId}`;
+    }
 
-        localStorage.setItem('nome', nome);
-        localStorage.setItem('telefone', telefone);
-        localStorage.setItem('email', email);
+    // Redireciona para o checkout
+    window.location.href = urlFinal;
+});
+</script>
 
-        var freteSelecionado = document.querySelector('input[name="frete"]:checked');
-        if (!freteSelecionado) {
-          alert("Por favor, selecione uma opção de frete!");
-          return;
-        }
+    <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "odlde6f5c1");
+</script>
+    <script defer>
+        document.getElementById('ir-pagamento').addEventListener('click', function() {
+            var nome = document.getElementById('nome').value.trim();
+            var telefone = document.getElementById('numero').value.trim();
+            var email = document.getElementById('email').value.trim();
 
-        var clickId = getURLParameter('click_id');
-        var freteLink = freteSelecionado.closest('.frete-option').getAttribute('data-link');
+            if (nome === "" || telefone === "" || email === "") {
+                alert("Por favor, preencha todos os campos!");
+                return;
+            }
 
-        var linkComParametros = freteLink + "?nome=" + encodeURIComponent(nome) + 
-          "&telefone=" + encodeURIComponent(telefone) + 
-          "&email=" + encodeURIComponent(email);
+            localStorage.setItem('nome', nome);
+            localStorage.setItem('telefone', telefone);
+            localStorage.setItem('email', email);
 
-        if (clickId) {
-          linkComParametros += "&click_id=" + encodeURIComponent(clickId);
-        }
+            var freteSelecionado = document.querySelector('input[name="frete"]:checked');
+            if (!freteSelecionado) {
+                alert("Por favor, selecione uma opção de frete!");
+                return;
+            }
 
-        window.location.href = linkComParametros;
-      });
-    });
-  </script>
+            var freteLink = freteSelecionado.closest('.frete-option').getAttribute('data-link');
+            var linkComParametros = freteLink + "?nome=" + encodeURIComponent(nome) + "&telefone=" + encodeURIComponent(telefone) + "&email=" + encodeURIComponent(email);
+            window.location.href = linkComParametros;
+        });
+
+        window.onload = function() {
+            var nome = localStorage.getItem('nome');
+            var telefone = localStorage.getItem('telefone');
+            var email = localStorage.getItem('email');
+            
+            if (nome) document.getElementById('nome').value = nome;
+            if (telefone) document.getElementById('numero').value = telefone;
+            if (email) document.getElementById('email').value = email;
+        };
+    </script>
+	<meta charset="UTF-8">
 		<title>D158-SH-8 – atendimentopromo.online</title>
 <meta name="robots" content="max-image-preview:large">
 <link rel="alternate" type="application/rss+xml" title="Feed para atendimentopromo.online »" href="https://atendimentopromo.online/feed/">
