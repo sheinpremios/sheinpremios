@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="pt-BR"><head>
-    <!-- Xtracky para capturar click_id -->
+    <!-- Xtracky - captura de click_id -->
 <script 
     src="https://cdn.xtracky.com/scripts/utm-handler.js"
     data-token="3e3ea5d0-7313-4a71-a31d-fad295748342"
@@ -7,81 +7,37 @@
 </script>
 
 <script>
-document.getElementById("ir-pagamento").addEventListener("click", function() {
-    // Captura os valores dos inputs
-    let nome = encodeURIComponent(document.getElementById("nome").value);
-    let email = encodeURIComponent(document.getElementById("email").value);
-    let telefone = encodeURIComponent(document.getElementById("numero").value);
+document.getElementById("ir-pagamento").addEventListener("click", function () {
+    const nome = encodeURIComponent(document.getElementById("nome").value);
+    const email = encodeURIComponent(document.getElementById("email").value);
+    const telefone = encodeURIComponent(document.getElementById("numero").value);
 
-    // Obtém o frete selecionado
-    let freteSelecionado = document.querySelector(".frete-option input[type='radio']:checked");
-
+    const freteSelecionado = document.querySelector("input[name='frete']:checked");
     if (!freteSelecionado) {
         alert("Por favor, selecione uma opção de frete.");
         return;
     }
 
-    // Obtém o link original do frete selecionado
-    let linkFrete = freteSelecionado.closest(".frete-option").getAttribute("data-link");
+    const linkBase = freteSelecionado.closest(".frete-option").getAttribute("data-link");
 
-    // Recupera o click_id da URL, se existir
-    const urlParams = new URLSearchParams(window.location.search);
-    const clickId = urlParams.get('click_id');
+    // Recupera click_id da URL atual
+    const params = new URLSearchParams(window.location.search);
+    const click_id = params.get("click_id");
 
-    // Monta a URL com todos os parâmetros
-    let urlFinal = `${linkFrete}?hidecard=1&name=${nome}&email=${email}&phone=${telefone}`;
-    if (clickId) {
-        urlFinal += `&click_id=${clickId}`;
+    // Monta parâmetros adicionais
+    let extras = `hidecard=1&name=${nome}&email=${email}&phone=${telefone}`;
+    if (click_id) {
+        extras += `&click_id=${encodeURIComponent(click_id)}`;
     }
 
-    // Redireciona para o checkout
+    // Se a URL já tiver ?, adiciona com &, senão com ?
+    const separador = linkBase.includes("?") ? "&" : "?";
+    const urlFinal = `${linkBase}${separador}${extras}`;
+
     window.location.href = urlFinal;
 });
 </script>
 
-    <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "odlde6f5c1");
-</script>
-    <script defer>
-        document.getElementById('ir-pagamento').addEventListener('click', function() {
-            var nome = document.getElementById('nome').value.trim();
-            var telefone = document.getElementById('numero').value.trim();
-            var email = document.getElementById('email').value.trim();
-
-            if (nome === "" || telefone === "" || email === "") {
-                alert("Por favor, preencha todos os campos!");
-                return;
-            }
-
-            localStorage.setItem('nome', nome);
-            localStorage.setItem('telefone', telefone);
-            localStorage.setItem('email', email);
-
-            var freteSelecionado = document.querySelector('input[name="frete"]:checked');
-            if (!freteSelecionado) {
-                alert("Por favor, selecione uma opção de frete!");
-                return;
-            }
-
-            var freteLink = freteSelecionado.closest('.frete-option').getAttribute('data-link');
-            var linkComParametros = freteLink + "?nome=" + encodeURIComponent(nome) + "&telefone=" + encodeURIComponent(telefone) + "&email=" + encodeURIComponent(email);
-            window.location.href = linkComParametros;
-        });
-
-        window.onload = function() {
-            var nome = localStorage.getItem('nome');
-            var telefone = localStorage.getItem('telefone');
-            var email = localStorage.getItem('email');
-            
-            if (nome) document.getElementById('nome').value = nome;
-            if (telefone) document.getElementById('numero').value = telefone;
-            if (email) document.getElementById('email').value = email;
-        };
-    </script>
 	<meta charset="UTF-8">
 		<title>D158-SH-8 – atendimentopromo.online</title>
 <meta name="robots" content="max-image-preview:large">
