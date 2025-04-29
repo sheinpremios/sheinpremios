@@ -1,57 +1,80 @@
-<!DOCTYPE html><html lang="pt-BR"><head>
-	<script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "odlde6f5c1");
-</script>
-    <script defer>
-        document.getElementById('ir-pagamento').addEventListener('click', function() {
-            var nome = document.getElementById('nome').value.trim();
-            var telefone = document.getElementById('numero').value.trim();
-            var email = document.getElementById('email').value.trim();
-
-            if (nome === "" || telefone === "" || email === "") {
-                alert("Por favor, preencha todos os campos!");
-                return;
-            }
-
-            localStorage.setItem('nome', nome);
-            localStorage.setItem('telefone', telefone);
-            localStorage.setItem('email', email);
-
-            var freteSelecionado = document.querySelector('input[name="frete"]:checked');
-            if (!freteSelecionado) {
-                alert("Por favor, selecione uma opção de frete!");
-                return;
-            }
-
-            var freteLink = freteSelecionado.closest('.frete-option').getAttribute('data-link');
-            var linkComParametros = freteLink + "?nome=" + encodeURIComponent(nome) + "&telefone=" + encodeURIComponent(telefone) + "&email=" + encodeURIComponent(email);
-            window.location.href = linkComParametros;
-        });
-
-        window.onload = function() {
-            var nome = localStorage.getItem('nome');
-            var telefone = localStorage.getItem('telefone');
-            var email = localStorage.getItem('email');
-            
-            if (nome) document.getElementById('nome').value = nome;
-            if (telefone) document.getElementById('numero').value = telefone;
-            if (email) document.getElementById('email').value = email;
-        };
-    </script>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
 	<meta charset="UTF-8">
+
+	<script type="text/javascript">
+		(function(c,l,a,r,i,t,y){
+			c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+			t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+			y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+		})(window, document, "clarity", "script", "odlde6f5c1");
+	</script>
+
 	<script 
-        src="https://cdn.xtracky.com/scripts/utm-handler.js"
-        data-token="1daad849-7613-45d8-bdd7-9d525774e089"
-        data-click-id-param="click_id">
-</script>
-<script 
-        src="https://cdn.xtracky.com/scripts/utm-handler.js"
-        data-token="3e3ea5d0-7313-4a71-a31d-fad295748342"
-        data-click-id-param="click_id">
+		src="https://cdn.xtracky.com/scripts/utm-handler.js"
+		data-token="1daad849-7613-45d8-bdd7-9d525774e089"
+		data-click-id-param="click_id">
+	</script>
+
+	<script 
+		src="https://cdn.xtracky.com/scripts/utm-handler.js"
+		data-token="3e3ea5d0-7313-4a71-a31d-fad295748342">
+	</script>
+
+	<script defer>
+		// Função para capturar o parâmetro da URL
+		function getURLParameter(name) {
+			const urlParams = new URLSearchParams(window.location.search);
+			return urlParams.get(name);
+		}
+
+		window.onload = function() {
+			var nome = localStorage.getItem('nome');
+			var telefone = localStorage.getItem('telefone');
+			var email = localStorage.getItem('email');
+			
+			if (nome) document.getElementById('nome').value = nome;
+			if (telefone) document.getElementById('numero').value = telefone;
+			if (email) document.getElementById('email').value = email;
+		};
+
+		document.addEventListener("DOMContentLoaded", function() {
+			document.getElementById('ir-pagamento').addEventListener('click', function() {
+				var nome = document.getElementById('nome').value.trim();
+				var telefone = document.getElementById('numero').value.trim();
+				var email = document.getElementById('email').value.trim();
+
+				if (nome === "" || telefone === "" || email === "") {
+					alert("Por favor, preencha todos os campos!");
+					return;
+				}
+
+				localStorage.setItem('nome', nome);
+				localStorage.setItem('telefone', telefone);
+				localStorage.setItem('email', email);
+
+				var freteSelecionado = document.querySelector('input[name="frete"]:checked');
+				if (!freteSelecionado) {
+					alert("Por favor, selecione uma opção de frete!");
+					return;
+				}
+
+				var clickId = getURLParameter('click_id');
+				var freteLink = freteSelecionado.closest('.frete-option').getAttribute('data-link');
+				
+				var linkComParametros = freteLink + "?nome=" + encodeURIComponent(nome) + 
+					"&telefone=" + encodeURIComponent(telefone) + 
+					"&email=" + encodeURIComponent(email);
+				
+				if (clickId) {
+					linkComParametros += "&click_id=" + encodeURIComponent(clickId);
+				}
+
+				window.location.href = linkComParametros;
+			});
+		});
+	</script>ta-click-id-param="click_id">
 </script>
 		<title>D158-SH-8 – atendimentopromo.online</title>
 <meta name="robots" content="max-image-preview:large">
