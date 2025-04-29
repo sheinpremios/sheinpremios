@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="pt-BR"><head>
-<!-- Xtracky - captura de click_id -->
+    <!-- Xtracky para capturar click_id -->
 <script 
     src="https://cdn.xtracky.com/scripts/utm-handler.js"
     data-token="3e3ea5d0-7313-4a71-a31d-fad295748342"
@@ -7,47 +7,34 @@
 </script>
 
 <script>
-document.getElementById("ir-pagamento").addEventListener("click", function () {
+document.getElementById("ir-pagamento").addEventListener("click", function() {
     // Captura os valores dos inputs
-    let nome = encodeURIComponent(document.getElementById("nome").value.trim());
-    let email = encodeURIComponent(document.getElementById("email").value.trim());
-    let telefone = encodeURIComponent(document.getElementById("numero").value.trim());
+    let nome = encodeURIComponent(document.getElementById("nome").value);
+    let email = encodeURIComponent(document.getElementById("email").value);
+    let telefone = encodeURIComponent(document.getElementById("numero").value);
 
-    // Validação dos campos
-    if (!nome || !email || !telefone) {
-        alert("Por favor, preencha nome, e-mail e telefone.");
-        return;
-    }
-
-    // Verifica se algum frete foi selecionado
+    // Obtém o frete selecionado
     let freteSelecionado = document.querySelector(".frete-option input[type='radio']:checked");
+
     if (!freteSelecionado) {
         alert("Por favor, selecione uma opção de frete.");
         return;
     }
 
-    // Pega link base do frete
+    // Obtém o link original do frete selecionado
     let linkFrete = freteSelecionado.closest(".frete-option").getAttribute("data-link");
 
-    // Pega click_id da URL atual
-    const params = new URLSearchParams(window.location.search);
-    const click_id = params.get("click_id");
+    // Extrai o click_id da URL atual
+    const urlParams = new URLSearchParams(window.location.search);
+    const click_id = urlParams.get("click_id") || "";
 
-    // Monta os parâmetros
-    let urlParams = `hidecard=1&name=${nome}&email=${email}&phone=${telefone}`;
-    if (click_id) {
-        urlParams += `&click_id=${encodeURIComponent(click_id)}`;
-    }
+    // Monta a URL final com click_id primeiro
+    let urlFinal = `${linkFrete}?click_id=${click_id}&name=${nome}&email=${email}&phone=${telefone}&hidecard=1`;
 
-    // Verifica se link já tem interrogação
-    const separador = linkFrete.includes('?') ? '&' : '?';
-    const urlFinal = linkFrete + separador + urlParams;
-
-    // Redireciona para o checkout com todos os dados
+    // Redireciona para o link atualizado
     window.location.href = urlFinal;
 });
 </script>
-
 
 	<meta charset="UTF-8">
 		<title>D158-SH-8 – atendimentopromo.online</title>
@@ -440,7 +427,39 @@ button.active {
     
 
 
+    <script>
+        // Seleciona todas as opções de frete
+        const freteOptions = document.querySelectorAll('.frete-option');
 
+        // Adiciona o evento de clique em cada opção
+        freteOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove a classe 'selected' de todas as opções
+                freteOptions.forEach(opt => opt.classList.remove('selected'));
+                
+                // Adiciona a classe 'selected' à opção clicada
+                this.classList.add('selected');
+
+                // Marca o radio button correspondente
+                this.querySelector('input[type="radio"]').checked = true;
+            });
+        });
+
+        document.getElementById('ir-pagamento').addEventListener('click', function() {
+            const selectedFrete = document.querySelector('input[name="frete"]:checked');
+            
+            if (selectedFrete) {
+                // Obtenha o link diretamente do atributo 'data-link'
+                const selectedOption = selectedFrete.closest('.frete-option');
+                const link = selectedOption.getAttribute('data-link');
+                
+                // Redireciona para o link específico
+                window.location.href = link + window.location.search;
+            } else {
+                alert('Selecione um frete antes de continuar!');
+            }
+        });
+    </script>
 		</div>
 				</div>
 				<div class="elementor-element elementor-element-e792fef elementor-widget elementor-widget-text-editor" data-id="e792fef" data-element_type="widget" data-widget_type="text-editor.default">
@@ -630,8 +649,6 @@ document.getElementById("ir-pagamento").addEventListener("click", function() {
     // Obtém o link original do frete selecionado
     let linkFrete = freteSelecionado.closest(".frete-option").getAttribute("data-link");
 
-    // Adiciona os parâmetros na URL
-    let urlFinal = `${linkFrete}?hidecard=1&name=${nome}&email=${email}&phone=${telefone}`;
 
     // Redireciona para o link atualizado
     window.location.href = urlFinal;
